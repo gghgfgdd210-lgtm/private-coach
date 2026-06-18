@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ملف اللاعب | برايفت كوتش</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="glass-nav">
+        <div class="nav-content">
+            <h1 class="logo">Private Coach <span>| ملف اللاعب</span></h1>
+            <div class="nav-links">
+                <button onclick="window.location.href='index.html'"><i class="fas fa-home"></i> العودة للرئيسية</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section class="view-section active">
+            <div class="player-profile glass-panel" id="player-profile-content">
+                <div style="text-align: center; padding: 3rem;">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: var(--primary);"></i>
+                    <p style="margin-top: 1rem;">جاري تحميل بيانات اللاعب...</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function renderAttendanceList(attendance) {
+            if (!attendance || attendance.length === 0) return '<p style="text-align:center; color: var(--text-muted);">لا يوجد سجل حضور بعد.</p>';
+            const arr = [...attendance];
+            return arr.reverse().map(record => {
+                const isPresent = record.status === 'present';
+                const statusColor = isPresent ? 'var(--primary)' : 'var(--danger)';
+                const statusText = isPresent ? 'حضور' : 'غياب';
+                const icon = isPresent ? 'fa-check-circle' : 'fa-times-circle';
+                return `
+                    <div style="display: flex; justify-content: space-between; background: rgba(0,0,0,0.2); padding: 0.8rem; margin-bottom: 0.5rem; border-radius: 6px; border-right: 4px solid ${statusColor};">
+                        <span>${record.date}</span>
+                        <span style="color: ${statusColor}; font-weight: bold;"><i class="fas ${icon}"></i> ${statusText}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function recordAttendance(playerId, status) {
+            const date = document.getElementById('attendance-date').value;
+            if(!date) return alert('يرجى تحديد التاريخ');
+            
+            const data = localStorage.getItem('coachPlayers');
+            if (data) {
+                const players = JSON.parse(data);
+                const playerIndex = players.findIndex(p => p.id === playerId);
+                if (playerIndex >= 0) {
+                    if(!players[playerIndex].attendance) players[playerIndex].attendance = [];
+                    const existingRecordIndex = players[playerIndex].attendance.findIndex(a => a.date === date);
+                    if(existingRecordIndex >= 0) {
+                        players[playerIndex].attendance[existingRecordIndex].status = status;
+                    } else {
+                        players[playerIndex].attendance.push({ date, status });
+                    }
+                    players[playerIndex].attendance.sort((a, b) => new Date(a.date) - new Date(b.date));
+                    localStorage.setItem('coachPlayers', JSON.stringify(players));
+                    document.getElementById('attendance-list').innerHTML = renderAttendanceList(players[playerIndex].attendance);
+                }
+            }
+        }
+
+        window.onload = () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const playerId = urlParams.get('id');
+
+            if (!playerId) {
+                document.getElementById('player-profile-content').innerHTML = '<h2 style="text-align:center; color: var(--danger);">لم يتم تحديد اللاعب!</h2>';
+                return;
+            }
+
+            const data = localStorage.getItem('coachPlayers');
+            if (data) {
+                const players = JSON.parse(data);
+                const player = players.find(p => p.id === playerId);
+                
+                if (player) {
+                    let statusClass, statusText;
+                    if(player.payment === 'paid') { statusClass = 'bg-green'; statusText = 'تم السداد'; }
+                    else if(player.payment === 'partial') { statusClass = 'bg-yellow'; statusText = 'متبقي جزء'; }
+                    else { statusClass = 'bg-red'; statusText = 'لم يسدد'; }
+
+                    const playerImageHtml = player.image ? `<div class="player-img-container"><img src="${player.image}" alt="${player.name}"></div>` : '';
+
+                    document.getElementById('player-profile-content').innerHTML = `
+                        ${playerImageHtml}
+                        <div class="detail-header">
+                            <h2>الملف الشخصي: ${player.name}</h2>
+                            <span class="status-badge ${statusClass}">${statusText}</span>
+                        </div>
+
+                        <div class="detail-section">
+                            <h3>بيانات الاشتراك</h3>
+                            <p><strong>تاريخ البداية:</strong> ${player.startDate} | <strong>تاريخ النهاية:</strong> ${player.endDate}</p>
+                            <p><strong>إجمالي الحصص:</strong> ${player.sessions} حصص | <strong>فترة التمرين:</strong> ${player.days} أيام</p>
+                        </div>
+
+                        <div class="detail-section">
+                            <h3>التقييم الفني</h3>
+                            <div class="stats-grid">
+                                <div class="stat-box">
+                                    <span class="stat-name">تمرير (${player.stats.passing}%)</span>
+                                    <div class="progress-bar"><div class="progress-fill" style="width: ${player.stats.passing}%"></div></div>
+                                </div>
+                                <div class="stat-box">
+                                    <span class="stat-name">تسديد (${player.stats.shooting}%)</span>
+                                    <div class="progress-bar"><div class="progress-fill" style="width: ${player.stats.shooting}%"></div></div>
+                                </div>
+                                <div class="stat-box">
+                                    <span class="stat-name">مراوغة (${player.stats.dribbling}%)</span>
+                                    <div class="progress-bar"><div class="progress-fill" style="width: ${player.stats.dribbling}%"></div></div>
+                                </div>
+                                <div class="stat-box">
+                                    <span class="stat-name">رشاقة (${player.stats.agility}%)</span>
+                                    <div class="progress-bar"><div class="progress-fill" style="width: ${player.stats.agility}%"></div></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="detail-section">
+                            <h3>سجل الحضور والغياب</h3>
+                            
+                            <div id="coach-attendance-controls" style="display:none; background: rgba(0,0,0,0.15); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                                <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+                                    <input type="date" id="attendance-date" value="${new Date().toISOString().split('T')[0]}" style="flex: 1; padding: 0.5rem; border-radius: 4px; background: rgba(255,255,255,0.1); border: 1px solid var(--border-glass); color: #fff;">
+                                    <button onclick="recordAttendance('${player.id}', 'present')" class="btn-success" style="padding: 0.5rem 1rem; border:none; cursor:pointer; color:#fff; border-radius:4px;"><i class="fas fa-check"></i> حضور</button>
+                                    <button onclick="recordAttendance('${player.id}', 'absent')" class="btn-danger" style="padding: 0.5rem 1rem; border:none; cursor:pointer; color:#fff; border-radius:4px;"><i class="fas fa-times"></i> غياب</button>
+                                </div>
+                            </div>
+
+                            <div class="attendance-list" id="attendance-list">
+                                ${renderAttendanceList(player.attendance)}
+                            </div>
+                        </div>
+
+                        <div class="detail-section" id="coach-notes-section" style="display:none;">
+                            <h3>ملاحظات المدرب</h3>
+                            <div class="notes-box">
+                                ${player.notes ? player.notes.replace(/\n/g, '<br>') : 'لا توجد ملاحظات'}
+                            </div>
+                        </div>
+                    `;
+
+                    if (sessionStorage.getItem('isCoach') === 'true') {
+                        document.getElementById('coach-notes-section').style.display = 'block';
+                        document.getElementById('coach-attendance-controls').style.display = 'block';
+                    }
+                    
+                } else {
+                    document.getElementById('player-profile-content').innerHTML = '<h2 style="text-align:center; color: var(--danger);">اللاعب غير موجود!</h2>';
+                }
+            } else {
+                document.getElementById('player-profile-content').innerHTML = '<h2 style="text-align:center; color: var(--danger);">لا توجد بيانات!</h2>';
+            }
+        };
+    </script>
+</body>
+</html>
