@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>برايفت كوتش | Private Coach</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="glass-nav">
+        <div class="nav-content">
+            <h1 class="logo">Private Coach <span>| أحمد طه</span></h1>
+            <div class="nav-links">
+                <button onclick="app.showSection('home')"><i class="fas fa-home"></i> الرئيسية</button>
+                <button onclick="app.showSection('login')"><i class="fas fa-sign-in-alt"></i> دخول</button>
+                <button id="nav-dashboard" onclick="app.showSection('dashboard')" style="display:none;"><i class="fas fa-cogs"></i> لوحة التحكم</button>
+                <button id="nav-logout" onclick="app.logout()" style="display:none;"><i class="fas fa-sign-out-alt"></i> خروج</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="container">
+        
+        <!-- ================= HOME SECTION ================= -->
+        <section id="section-home" class="view-section active">
+            <div class="hero">
+                <div class="hero-content glass-panel">
+                    <div class="profile-pic">
+                        <!-- Placeholder for user's photo -->
+                        <img src="https://via.placeholder.com/150/1e293b/10b981?text=A7med+Taha" alt="أحمد طه" id="profile-img">
+                    </div>
+                    <h2>الكابتن <span>أحمد طه</span></h2>
+                    <div class="bio" style="line-height: 2; font-size: 1.1rem; text-align: center; margin-bottom: 2rem;">
+                        <p>بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ (1) الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ (2) الرَّحْمَنِ الرَّحِيمِ (3) مَالِكِ يَوْمِ الدِّينِ (4) إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ (5) اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ (6) صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ (7)</p>
+                        <br>
+                        <p>بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ. قُلْ هُوَ اللَّهُ أَحَدٌ (1) اللَّهُ الصَّمَدُ (2) لَمْ يَلِدْ وَلَمْ يُولَدْ (3) وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ (4)</p>
+                        <br>
+                        <p>بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ. قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ (1) مِن شَرِّ مَا خَلَقَ (2) وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ (3) وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ (4) وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ (5)</p>
+                        <br>
+                        <p>بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ. قُلْ أَعُوذُ بِرَبِّ النَّاسِ (1) مَلِكِ النَّاسِ (2) إِلَهِ النَّاسِ (3) مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ (4) الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ (5) مِنَ الْجِنَّةِ وَالنَّاسِ (6)</p>
+                    </div>
+
+                    <div class="prayer-box">
+                        <i class="fas fa-hands-praying"></i>
+                        <p>فضلاً وليس أمراً، أسألكم قراءة الفاتحة والدعاء لأمي بالرحمة والمغفرة.</p>
+                    </div>
+                    
+                    <div class="social-links">
+                        <div class="social-card">
+                            <a href="https://www.tiktok.com/@a7elite96?_r=1&_t=ZS-97JTXoeZG3p" target="_blank" class="btn-social btn-tiktok"><i class="fab fa-tiktok"></i> تيك توك</a>
+                            <div id="qr-tiktok" class="qr-container"></div>
+                        </div>
+                        <div class="social-card">
+                            <a href="https://www.facebook.com/share/1BiifKRhow/?mibextid=wwXIfr" target="_blank" class="btn-social btn-fb"><i class="fab fa-facebook"></i> فيسبوك 1</a>
+                            <div id="qr-fb1" class="qr-container"></div>
+                        </div>
+                        <div class="social-card">
+                            <a href="https://www.facebook.com/share/1BqfMrfbUY/?mibextid=wwXIfr" target="_blank" class="btn-social btn-fb"><i class="fab fa-facebook"></i> فيسبوك 2</a>
+                            <div id="qr-fb2" class="qr-container"></div>
+                        </div>
+                        <div class="social-card">
+                            <a href="https://wa.me/201145345321" target="_blank" class="btn-social btn-wa"><i class="fab fa-whatsapp"></i> واتساب</a>
+                            <div id="qr-wa" class="qr-container"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= LOGIN SECTION ================= -->
+        <section id="section-login" class="view-section">
+            <div class="login-wrapper">
+                <div class="glass-panel login-panel">
+                    <h2>تسجيل الدخول</h2>
+                    <div class="tabs">
+                        <button class="tab-btn active" onclick="app.setLoginType('coach')">مدرب</button>
+                        <button class="tab-btn" onclick="app.setLoginType('player')">لاعب</button>
+                    </div>
+                    <form id="login-form" onsubmit="app.handleLogin(event)">
+                        <div class="form-group">
+                            <label>اسم المستخدم</label>
+                            <input type="text" id="login-username" required placeholder="ادخل اسم المستخدم">
+                        </div>
+                        <div class="form-group">
+                            <label>كلمة المرور</label>
+                            <input type="password" id="login-password" required placeholder="ادخل كلمة المرور">
+                        </div>
+                        <button type="submit" class="btn-primary w-100">دخول</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= DASHBOARD SECTION (Coach) ================= -->
+        <section id="section-dashboard" class="view-section">
+            <div class="dashboard-header">
+                <h2>إدارة اللاعبين</h2>
+                <button class="btn-success" onclick="app.openPlayerModal()"><i class="fas fa-user-plus"></i> إضافة لاعب جديد</button>
+            </div>
+            
+            <div class="search-bar glass-panel">
+                <i class="fas fa-search"></i>
+                <input type="text" id="search-player" placeholder="ابحث عن لاعب بالاسم..." onkeyup="app.searchPlayers()">
+            </div>
+
+            <div id="alerts-container" style="margin-bottom: 2rem;"></div>
+
+            <div class="players-grid" id="players-list">
+                <!-- Players will be injected here via JS -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal for Add/Edit Player -->
+    <div id="player-modal" class="modal">
+        <div class="modal-content glass-panel">
+            <span class="close-modal" onclick="app.closePlayerModal()">&times;</span>
+            <h2 id="modal-title">إضافة لاعب جديد</h2>
+            <form id="player-form" onsubmit="app.savePlayer(event)">
+                <input type="hidden" id="p-id">
+                
+                <div class="form-section">
+                    <h3>البيانات الأساسية</h3>
+                    <div class="form-group">
+                        <label>اسم اللاعب</label>
+                        <input type="text" id="p-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>كلمة المرور للاعب</label>
+                        <input type="text" id="p-password" required>
+                    </div>
+                    <div class="form-group">
+                        <label>رابط صورة اللاعب (اختياري)</label>
+                        <input type="url" id="p-image" placeholder="مثال: https://...">
+                    </div>
+                    <div class="form-group">
+                        <label>رقم هاتف اللاعب (واتساب)</label>
+                        <input type="tel" id="p-phone" placeholder="مثال: 201xxxxxxxxx">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>بيانات الاشتراك</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>تاريخ البداية</label>
+                            <input type="date" id="p-start-date" required onchange="app.calculateEndDate()">
+                        </div>
+                        <div class="form-group">
+                            <label>أيام التمرين (كم يوم)</label>
+                            <input type="number" id="p-days" min="1" required onchange="app.calculateEndDate()">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>تاريخ النهاية المتوقع</label>
+                            <input type="date" id="p-end-date" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>عدد الحصص</label>
+                            <input type="number" id="p-sessions" min="1" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>حالة السداد</label>
+                        <select id="p-payment" required>
+                            <option value="paid">تم السداد (أخضر)</option>
+                            <option value="partial">متبقي جزء (أصفر)</option>
+                            <option value="unpaid">لم يتم السداد (أحمر)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>التقييمات الفنية (من 100)</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>تمرير</label>
+                            <input type="number" id="p-passing" min="0" max="100" value="50">
+                        </div>
+                        <div class="form-group">
+                            <label>تسديد</label>
+                            <input type="number" id="p-shooting" min="0" max="100" value="50">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>مراوغة</label>
+                            <input type="number" id="p-dribbling" min="0" max="100" value="50">
+                        </div>
+                        <div class="form-group">
+                            <label>رشاقة</label>
+                            <input type="number" id="p-agility" min="0" max="100" value="50">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>ملاحظات المدرب</h3>
+                    <div class="form-group">
+                        <textarea id="p-notes" rows="4" placeholder="اكتب ملاحظاتك عن اللاعب هنا..."></textarea>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary w-100">حفظ بيانات اللاعب</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
